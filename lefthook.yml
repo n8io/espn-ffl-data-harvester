@@ -1,0 +1,21 @@
+pre-push:
+  commands:
+    eslint:
+      tags: lint eslint
+      glob: '*.js'
+      run: yarn -s eslint
+    prettier:
+      tags: lint prettier
+      glob: '*.js'
+      run: yarn -s prettier . --list-different
+
+pre-commit:
+  commands:
+    eslint:
+      tags: lint eslint
+      glob: '*.js'
+      run: yarn -s eslint --fix
+    prettier:
+      tags: lint prettier
+      glob: '*.js'
+      run: yarn -s prettier . --fix
