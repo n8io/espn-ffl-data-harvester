@@ -9,7 +9,7 @@ const safeKeys = [
   'HEADLESS',
   'LEAGUE_ID',
   'NODE_ENV',
-  'SEASON_ID'
+  'SEASON_ID',
 ];
 
 const env = pipe(
@@ -18,8 +18,8 @@ const env = pipe(
     HEADLESS: defaultTo(true),
     LEAGUE_ID: Number,
     NODE_ENV: defaultTo('production'),
-    SEASON_ID: Number
-  })
+    SEASON_ID: Number,
+  }),
 )(process.env);
 
 export { env };
