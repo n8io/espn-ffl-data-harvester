@@ -1,4 +1,9 @@
-import { byAbbrev, pointsByPositionStat } from './stats';
+import {
+  byAbbrev,
+  pointsByPositionStat,
+  pointsMapToPointsTotal,
+  toPointsMap,
+} from './stats';
 
 const runTests = (tests) => {
   tests.forEach(({ expected, input }) => {
@@ -137,4 +142,22 @@ describe('points are calculated correctly', () => {
 
     runTests(tests);
   });
+});
+
+describe('toPointsMap', () => {
+  test('calculates points map', () =>
+    expect(toPointsMap('QB')({ INTT: 1, PTD: 1 })).toEqual({
+      INTT: -15,
+      PTD: 30,
+    }));
+});
+
+describe('pointsMapToPointsTotal', () => {
+  test('points map to points total', () =>
+    expect(
+      pointsMapToPointsTotal({
+        INTT: -15,
+        PTD: 30,
+      }),
+    ).toEqual(15));
 });
