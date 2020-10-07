@@ -11,7 +11,7 @@ const toLite = pipe(
     scoringPeriodId: 'weekId',
   }),
   evolve({
-    externalId: Number,
+    id: (id) => Number(id.toString().replace(/^01/, '')),
     stats: pipe(toPairs, map(toAbbrevStat), fromPairs),
   }),
   omit(['proTeamId', 'statSourceId', 'statSplitTypeId']),

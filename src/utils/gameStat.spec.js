@@ -6,8 +6,7 @@ describe('gameStat', () => {
 
     test('transforms a raw game stat to the lite game stat', () => {
       const expected = {
-        externalId: 401127991,
-        id: '01401127991',
+        id: 987,
         pointsGross: 73,
         seasonId: 2019,
         stats: {
@@ -47,8 +46,7 @@ describe('gameStat', () => {
 function sampleRawGameStat() {
   return {
     appliedTotal: 73,
-    externalId: '401127991',
-    id: '01401127991',
+    id: '01987',
     proTeamId: 16,
     scoringPeriodId: 17,
     seasonId: 2019,

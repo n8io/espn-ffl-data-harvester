@@ -8,7 +8,7 @@ init();
   const scheduleFilename = await fetchSeasonSchedule();
   const gameStatsFilename = await fetchSeasonPlayerGameStats();
 
-  // await processStatMap();
+  // // await processStatMap();
   await processSeasonSchedule(scheduleFilename);
   await processGameStats(gameStatsFilename);
 })();

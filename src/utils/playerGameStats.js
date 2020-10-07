@@ -1,18 +1,9 @@
-import {
-  ascend,
-  filter,
-  identity,
-  isEmpty,
-  keys,
-  map,
-  pick,
-  pipe,
-  reduce,
-  sort,
-  toPairs,
-} from 'ramda';
+import { filter, isEmpty, keys, map, pick, pipe, reduce, toPairs } from 'ramda';
+
+import { stats as statColumns } from '../constants/csvColumns';
 
 import { renameKeys } from './renameKeys';
+import { opponent as getOpponentAbbrev } from './schedule';
 import {
   pointsMapToPointsTotal,
   abbrevMap as statAbbrevMap,
@@ -54,9 +45,7 @@ const appendStatCols = map(({ stats, statsPointMap, ...rest }) => {
   )(statsPointMap);
 
   const raw = { ...rest, ...statCols, ...statPointsCols, ...stats, ...scoring };
-  const sortedKeys = pipe(keys, sort(ascend(identity)))(raw);
-
-  const output = pick(sortedKeys, raw);
+  const output = pick(statColumns, raw);
 
   return output;
 });
@@ -68,13 +57,13 @@ const playerToPlayerGameStats = pipe(({ stats, ...player }) => {
     map(
       pipe(
         renameKeys({
-          externalId: 'gameIdExternal',
           id: 'gameId',
         }),
         ({ stats, ...rest }) => {
           if (isEmpty(stats)) return null;
 
           const { pointsGross } = rest;
+          const opponent = getOpponentAbbrev(rest.gameId, player.proTeam);
           const statsPointMap = toPointsMap(player.position, stats);
           const pointsNet = pointsMapToPointsTotal(statsPointMap);
           const pointAdjustments = pointsNet - pointsGross;
@@ -82,6 +71,7 @@ const playerToPlayerGameStats = pipe(({ stats, ...player }) => {
           return {
             ...player,
             ...rest,
+            opponent,
             pointAdjustments,
             pointsNet,
             stats,

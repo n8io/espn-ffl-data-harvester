@@ -3,11 +3,11 @@ import { join } from 'path';
 
 import { Transform } from 'json2csv';
 
+import { config } from '../config';
 import {
   schedule as scheduleColumns,
   stats as statsColumns,
 } from '../constants/csvColumns';
-import { config } from '../config';
 
 const { ESPN_SEASON_ID } = config;
 

@@ -1,5 +1,5 @@
-IF EXISTS DROP TABLE history.seasonstats;
-
+TRUNCATE TABLE history.seasonstats;
+DROP TABLE IF EXISTS history.seasonstats;
 CREATE TABLE history.seasonstats (
   "1PSF" real DEFAULT 0,
   "1PSF_PTS" real DEFAULT 0,
@@ -429,8 +429,7 @@ CREATE TABLE history.seasonstats (
   YPC_PTS real DEFAULT 0,
   firstName varchar(50) DEFAULT NULL,
   fullName varchar(100) DEFAULT NULL,
-  gameId varchar DEFAULT NULL,
-  gameIdExternal integer DEFAULT NULL,
+  gameId integer DEFAULT NULL,
   id integer DEFAULT NULL,
   injuryStatus varchar DEFAULT NULL,
   isActive boolean DEFAULT NULL,
@@ -438,6 +437,7 @@ CREATE TABLE history.seasonstats (
   isInjured boolean DEFAULT NULL,
   jersey integer DEFAULT NULL,
   lastName varchar(50) DEFAULT NULL,
+  opponent varchar(50) DEFAULT NULL,
   owner varchar(50) DEFAULT NULL,
   pointAdjustments real DEFAULT NULL,
   pointsGross real DEFAULT NULL,
