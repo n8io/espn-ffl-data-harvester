@@ -1,26 +1,23 @@
-import {
-  ascend,
-  evolve,
-  identity,
-  isEmpty,
-  keys,
-  map,
-  pick,
-  pipe,
-  sort,
-  toUpper,
-} from 'ramda';
+import { evolve, isEmpty, map, pick, pipe, toUpper } from 'ramda';
+
+import { schedule as scheduleColumns } from '../constants/csvColumns';
 
 import { renameKeys } from './renameKeys';
 
 const rawCompetitorToCompetitor = pipe(
+  ({ homeAway, records, score, team, winner }) => ({
+    ...team,
+    homeAway,
+    record: records[0].summary,
+    score,
+    winner,
+  }),
   renameKeys({
     abbreviation: 'abbrev',
     alternateColor: 'colorSecondary',
     color: 'colorPrimary',
     displayName: 'name',
-    logo: 'logoLight',
-    name: 'nameShort',
+    shortDisplayName: 'nameShort',
   }),
   evolve({
     colorPrimary: toUpper,
@@ -45,8 +42,7 @@ const rawCompetitorToCompetitor = pipe(
     'id',
     'isHome',
     'isWinner',
-    'logoDark',
-    'logoLight',
+    'logo',
     'name',
     'nameShort',
     'record',
@@ -56,31 +52,37 @@ const rawCompetitorToCompetitor = pipe(
 
 const rawCompetitorsToCompetitors = map(rawCompetitorToCompetitor);
 
-const rawEventToGame = pipe(
-  pick([
-    'broadcast',
-    'competitors',
-    'date',
-    'id',
-    'location',
-    'name',
-    // 'odds',
-    'season',
-    'shortName',
-    'week',
-  ]),
-  renameKeys({
-    name: 'description',
-    season: 'seasonId',
-    week: 'weekId',
-  }),
-  evolve({
-    id: Number,
-    competitors: rawCompetitorsToCompetitors,
-  }),
-);
+const rawEventToGame = (weekId) =>
+  pipe(
+    ({ competitions, name, season, shortName, status }) => ({
+      ...competitions[0],
+      isComplete: status.type.completed,
+      name,
+      season: season.year,
+      shortName,
+      weekId,
+    }),
+    pick([
+      'competitors',
+      'date',
+      'id',
+      'isComplete',
+      'name',
+      'season',
+      'shortName',
+      'weekId',
+    ]),
+    renameKeys({
+      name: 'description',
+      season: 'seasonId',
+    }),
+    evolve({
+      id: Number,
+      competitors: rawCompetitorsToCompetitors,
+    }),
+  );
 
-const rawEventsToGames = map(rawEventToGame);
+const rawEventsToGames = (weekId) => map(rawEventToGame(weekId));
 
 const flattenGame = ({ competitors, ...rest }) => {
   const away = competitors.find((c) => !c.isHome);
@@ -96,9 +98,7 @@ const flattenGame = ({ competitors, ...rest }) => {
     homeScore: home.score,
   };
 
-  const sortedKeys = pipe(keys, sort(ascend(identity)))(data);
-
-  return pick(sortedKeys, data);
+  return pick(scheduleColumns, data);
 };
 
 const gamesToExport = map(flattenGame);

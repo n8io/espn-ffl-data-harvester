@@ -30,7 +30,6 @@ function samplePlayerLite() {
     proTeam: 'SF',
     stats: [
       {
-        externalId: 401220184,
         id: '01401220184',
         pointsGross: 73,
         seasonId: 2019,
@@ -498,7 +497,6 @@ function playerGameStatExpected() {
       firstName: 'George',
       fullName: 'George Kittle',
       gameId: '01401220184',
-      gameIdExternal: 401220184,
       id: 2576336,
       injuryStatus: 'ACTIVE',
       isActive: true,
@@ -506,6 +504,7 @@ function playerGameStatExpected() {
       isInjured: false,
       jersey: 31,
       lastName: 'Kittle',
+      opponent: null,
       owner: null,
       pointAdjustments: 62,
       pointsGross: 73,

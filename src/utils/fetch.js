@@ -7,6 +7,7 @@ import { config } from '../config';
 
 import { writeJson } from './file';
 import { gamesToExport, rawEventsToGames } from './game';
+import { setSchedule } from './schedule';
 
 const { ESPN_LEAGUE_ID, ESPN_SEASON_ID } = config;
 
@@ -41,19 +42,13 @@ const fetchWithAuth = async (url, headers) => {
 
 const fetchWeekSchedule = async (weekId) => {
   const url = new URL(
-    `/apis/v2/scoreboard/header?sport=football&league=nfl&seasontype=2&weeks=${weekId}&dates=${ESPN_SEASON_ID}&lang=en&region=us&contentorigin=espn&tz=America%2FNew_York`,
+    `/apis/site/v2/sports/football/nfl/scoreboard?limit=100&showAirings=true&dates=${ESPN_SEASON_ID}&seasontype=2&week=${weekId}`,
     'https://site.api.espn.com',
   );
 
-  const {
-    sports: [
-      {
-        leagues: [{ events }],
-      },
-    ],
-  } = await fetch(url);
+  const { events } = await fetch(url);
 
-  return rawEventsToGames(events);
+  return rawEventsToGames(weekId)(events);
 };
 
 const fetchSeasonSchedule = async () => {
@@ -70,6 +65,7 @@ const fetchSeasonSchedule = async () => {
   );
 
   await writeJson(filename, seasonSchedule);
+  setSchedule(seasonSchedule);
 
   console.log(`Wrote schedule file to ${filename}`);
 
@@ -114,7 +110,7 @@ const fetchSeasonPlayerGameStats = async () => {
           24,
         ],
       },
-      // filterIds:  { value: [13979] },
+      // filterIds: { value: [3728305] },
       filterRanksForScoringPeriodIds: { value: [4] },
       limit: MAX_RESULTS,
       offset: 0,

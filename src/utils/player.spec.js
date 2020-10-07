@@ -20,8 +20,8 @@ describe('player', () => {
         proTeam: 'MIN',
         stats: [
           {
-            externalId: 401127991,
-            id: '01401127991',
+            externalId: '123',
+            id: 987,
             pointsGross: 73,
             seasonId: 2019,
             stats: {
@@ -158,7 +158,6 @@ function sampleRawPlayer() {
         },
         {
           appliedTotal: 0,
-          externalId: '401220300',
           id: '01401220300',
           proTeamId: 16,
           scoringPeriodId: 1,
@@ -172,8 +171,8 @@ function sampleRawPlayer() {
         },
         {
           appliedTotal: 73,
-          externalId: '401127991',
-          id: '01401127991',
+          externalId: '123',
+          id: '01987',
           proTeamId: 16,
           scoringPeriodId: 17,
           seasonId: 2019,
